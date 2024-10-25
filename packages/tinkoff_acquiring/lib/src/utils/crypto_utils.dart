@@ -9,7 +9,7 @@ class CryptoUtils {
   /// Метод для получения хеш-функций `SHA256`
   static String sha256(String string) {
     return crypto.sha256
-        .convert(utf8.encode(string)).
+        .convert(convert.utf8.encode(string))
         .toString();
   }
 
