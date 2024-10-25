@@ -151,24 +151,26 @@ class NetworkClient {
 /// {@endtemplate}
 class SignToken {
   /// {@macro sign_token}
-  @visibleForTesting
   static String generate({
     required String terminalKey,
     required AcquiringRequest request,
     String? password,
   }) {
     final Map<String, dynamic> temp = request.toJson()
-      ..addAll(<String, dynamic>{
+      ..addAll({
         JsonKeys.terminalKey: terminalKey,
         if (password != null && password.isNotEmpty)
           JsonKeys.password: password,
       });
-    final List<String> sortedKeys = List<String>.from(temp.keys)..sort();
-    final StringBuffer buffer = StringBuffer();
 
-    for (int i = 0; i < sortedKeys.length; i++) {
-      if (!request.ignoredFields.contains(sortedKeys[i])) {
-        buffer.write(temp[sortedKeys[i]]);
+    // Сортировка ключей в алфавитном порядке
+    final sortedKeys = temp.keys.toList()
+      ..sort();
+    final buffer = StringBuffer();
+
+    for (final key in sortedKeys) {
+      if (!request.ignoredFields.contains(key)) {
+        buffer.write(temp[key].toString());
       }
     }
 
